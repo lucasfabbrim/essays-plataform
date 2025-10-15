@@ -2,16 +2,42 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Button } from "@/components/ui/button"
-import { BookOpen, Lightbulb, Sparkles, Star, TrendingUp, ArrowRight } from "lucide-react"
+import { BookOpen, Sparkles, Star, TrendingUp, SquareArrowOutUpRight, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { NovaRedacaoModal } from "@/components/nova-redacao-modal"
 import { getMyEssays, type MyEssay } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 
+interface QuickAccessCardProps {
+  href: string
+  title: string
+  description: string
+  icon: React.ReactNode
+}
+
+function QuickAccessCard({ href, title, description, icon }: QuickAccessCardProps) {
+  return (
+    <Link href={href} className="block pt-1">
+      <Card className="transition-all bg-[#EEF2EC] hover:shadow-lg hover:border-primary/50">
+        <CardHeader className="space-y-1">
+          <div className="flex items-center gap-2 sm:gap-2.5 px-1">
+            {icon}
+            <CardTitle className="text-lg sm:text-base text-wrap tracking-tighter text-green-950">
+              {title}
+            </CardTitle>
+          </div>
+          <CardDescription className="flex flex-row px-1 items-center gap-6">
+            <h4 className="text-xs sm:text-base text-zinc-800">{description}</h4>
+            <ArrowUpRight className="h-8 w-8 text-green-950"/>
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </Link>
+  )
+}
+
 export default function HomePage() {
-  const [performanceTab, setPerformanceTab] = useState("redacoes")
   const [essays, setEssays] = useState<MyEssay[]>([])
   const [loading, setLoading] = useState(true)
   const { user } = useAuth()
@@ -32,9 +58,7 @@ export default function HomePage() {
   }
 
   const normalizeScore = (score: number): number => {
-    // If score is already in 0-1000 range, return as is
     if (score > 10) return score
-    // If score is in 0-10 range, convert to 0-1000
     return score * 100
   }
 
@@ -79,60 +103,30 @@ export default function HomePage() {
 
   return (
     <div className="container max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
-      <div className="text-center space-y-1.5 sm:space-y-2 py-2 sm:py-4">
-        <h1 className="text-xl sm:text-2xl font-bold text-balance">Bem-vindo ao seu preparatório ENEM</h1>
-        <p className="text-sm sm:text-base text-muted-foreground text-balance px-2">
-          Escolha uma das opções abaixo para começar sua jornada rumo à nota 1000
-        </p>
-      </div>
+      <Card className="flex flex-col px-4">
+        <div className="space-y-3 sm:space-y-3">
+          <div className="flex items-center gap-2 px-2">
+            <SquareArrowOutUpRight className="h-4 w-4 text-green-950" />
+            <h1 className="text-xl sm:text-2xl font-semibold py-4 tracking-tighter">Acesso rápido</h1>
+          </div>
 
-      <div className="space-y-2.5 sm:space-y-3">
-        <Card className="transition-all hover:shadow-lg hover:border-primary/50">
-          <CardHeader className="space-y-2 sm:space-y-2.5 p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-lg bg-primary/10 shrink-0">
-                <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-              </div>
-              <CardTitle className="text-sm sm:text-base text-balance">
-                Modelos de redação para você tirar 900+
-              </CardTitle>
-            </div>
-            <CardDescription className="text-xs sm:text-sm text-balance line-clamp-2">
-              Acesse redações nota 1000 e aprenda com os melhores exemplos do ENEM.
-            </CardDescription>
-            <Link href="/redacoes?tab=modelos" className="block pt-1">
-              <Button className="w-full" size="sm">
-                Ver modelos
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </CardHeader>
-        </Card>
+          <QuickAccessCard
+            href="/modelos"
+            title="Redações nota 900+"
+            description="Acesse redações nota 1000 e aprenda com os melhores exemplos do ENEM."
+            icon={<BookOpen className="h-5 w-5 sm:h-5 sm:w-5 text-green-950" />}
+          />
 
-        <Card className="transition-all hover:shadow-lg hover:border-primary/50">
-          <CardHeader className="space-y-2 sm:space-y-2.5 p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-lg bg-primary/10 shrink-0">
-                <Lightbulb className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-              </div>
-              <CardTitle className="text-sm sm:text-base text-balance">
-                Explicação da redação do que você deve fazer
-              </CardTitle>
-            </div>
-            <CardDescription className="text-xs sm:text-sm text-balance line-clamp-2">
-              Entenda passo a passo como construir uma redação nota 1000.
-            </CardDescription>
-            <Link href="/redacoes?tab=explicacao" className="block pt-1">
-              <Button className="w-full" size="sm">
-                Ver explicação
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </CardHeader>
-        </Card>
+          <QuickAccessCard
+            href="/redacoes?tab=explicacao"
+            title="Redações nota 900+"
+            description="Acesse redações nota 1000 e aprenda com os melhores exemplos do ENEM."
+            icon={<BookOpen className="h-5 w-5 sm:h-5 sm:w-5 text-green-950" />}
+          />
 
-        <CorrigirRedacaoCard />
-      </div>
+          <CorrigirRedacaoCard />
+        </div>
+      </Card>
 
       <div className="space-y-3 sm:space-y-4 pt-4 sm:pt-6">
         <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 "use client"
 
-import { Coins } from "lucide-react"
+import { CircleDollarSign, UserRound } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link"
@@ -36,36 +36,31 @@ export function MobileHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-zinc-950 md:hidden">
-      <div className="flex h-14 items-center justify-between px-3 sm:px-4">
-        {/* Logo */}
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-white md:hidden">
+      <div className="flex h-16 items-center justify-between px-5 ">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-base font-bold text-primary-foreground">E</span>
-          </div>
-          <span className="text-lg font-bold">Essays</span>
+          <span className="text-lg font-extrabold tracking-tighter text-green-700">ESSAYS</span>
         </Link>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => addCredits(5)}
-            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-200 border border-primary/20 hover:bg-primary/20 transition-colors"
           >
-            <Coins className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-            <span className="text-xs sm:text-sm font-semibold text-primary">${credits.toFixed(2)}</span>
+            <CircleDollarSign className="h-4 w-5 text-green-900" />
+            <span className="text-sm font-semibold text-green-900">${credits.toFixed(2)}</span>
           </button>
 
-          <Button size="sm" className="bg-primary hover:bg-primary/90 text-xs h-8 px-2.5 sm:px-3 hidden sm:flex">
+          <Button size="sm" className="bg-green-200 hover:bg-green-200/90 text-green-900 text-xs h-8 px-2.5 sm:px-3 hidden sm:flex">
             Premium
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 rounded-full">
-                <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
-                  <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
-                    {getUserInitials()}
+              <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-9 sm:w-9 rounded-full">
+                <Avatar className="h-9 w-9 border border-primary/20 hover:bg-primary/20 transition-colors">
+                  <AvatarFallback className="bg-zinc-200 text-primary-foreground text-xs font-semibold">
+                    <UserRound className="h-7 w-7 text-zinc-700" strokeWidth={3} />
                   </AvatarFallback>
                 </Avatar>
               </Button>
