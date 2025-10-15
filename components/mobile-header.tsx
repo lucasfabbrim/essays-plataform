@@ -20,21 +20,6 @@ export function MobileHeader() {
   const { credits, addCredits } = useCredits()
   const { user, signOut } = useAuth()
 
-  const getUserInitials = () => {
-    if (user?.displayName) {
-      return user.displayName
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
-    }
-    if (user?.email) {
-      return user.email[0].toUpperCase()
-    }
-    return "U"
-  }
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-white md:hidden">
       <div className="flex h-16 items-center justify-between px-5 ">
@@ -47,8 +32,7 @@ export function MobileHeader() {
             onClick={() => addCredits(5)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-200 border border-primary/20 hover:bg-primary/20 transition-colors"
           >
-            <CircleDollarSign className="h-4 w-5 text-green-900" />
-            <span className="text-sm font-semibold text-green-900">${credits.toFixed(2)}</span>
+            <span className="text-sm font-semibold text-green-900">R$ {credits.toFixed(2)}</span>
           </button>
 
           <Button size="sm" className="bg-green-200 hover:bg-green-200/90 text-green-900 text-xs h-8 px-2.5 sm:px-3 hidden sm:flex">

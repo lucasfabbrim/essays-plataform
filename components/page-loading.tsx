@@ -1,6 +1,6 @@
 export default function PageLoading() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+    <div className="flex min-h-screen items-center justify-center bg-white">
       <div className="flex flex-col items-center gap-6">
         {/* Logo */}
         <div className="flex items-center gap-2">

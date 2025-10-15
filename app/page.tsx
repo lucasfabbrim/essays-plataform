@@ -1,11 +1,11 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { BookOpen, Sparkles, Star, TrendingUp, SquareArrowOutUpRight, ArrowUpRight } from "lucide-react"
+import { BookOpen, Sparkles, Star, SquareArrowOutUpRight, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { NovaRedacaoModal } from "@/components/nova-redacao-modal"
+import { PerformanceSummary } from "@/components/performance-summary"
 import { getMyEssays, type MyEssay } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 
@@ -99,7 +99,6 @@ export default function HomePage() {
 
   const averageScore = calculateAverageScore()
   const competenceAverages = calculateCompetenceAverages()
-  const averagePercentage = (averageScore / 1000) * 100
 
   return (
     <div className="container max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
@@ -128,153 +127,12 @@ export default function HomePage() {
         </div>
       </Card>
 
-      <div className="space-y-3 sm:space-y-4 pt-4 sm:pt-6">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-          <h2 className="text-base sm:text-lg font-bold">Resumo do desempenho</h2>
-        </div>
-
-        {loading ? (
-          <div className="space-y-3">
-            <Card>
-              <CardContent className="p-4 space-y-3">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-24 w-24 rounded-full mx-auto" />
-                <Skeleton className="h-8 w-full" />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 space-y-2">
-                <Skeleton className="h-4 w-40" />
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Skeleton key={i} className="h-6 w-full" />
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-        ) : (
-          <>
-            <Card className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border-emerald-500/20">
-              <CardHeader className="p-3 sm:p-4 pb-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-emerald-500/10">
-                    <Star className="h-3.5 w-3.5 text-emerald-600" />
-                  </div>
-                  <CardTitle className="text-xs sm:text-sm">Nota final média</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-2 p-3 sm:p-4 pt-0">
-                <div className="flex items-center justify-center py-3 sm:py-4">
-                  <div className="relative">
-                    <svg className="w-24 h-24 sm:w-32 sm:h-32 transform -rotate-90">
-                      <circle
-                        cx="48"
-                        cy="48"
-                        r="44"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        fill="none"
-                        className="text-muted sm:hidden"
-                      />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
-                        stroke="currentColor"
-                        strokeWidth="10"
-                        fill="none"
-                        className="text-muted hidden sm:block"
-                      />
-                      <circle
-                        cx="48"
-                        cy="48"
-                        r="44"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        fill="none"
-                        strokeDasharray={`${(averagePercentage / 100) * 276} 276`}
-                        className="text-emerald-600 transition-all duration-1000 sm:hidden"
-                      />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
-                        stroke="currentColor"
-                        strokeWidth="10"
-                        fill="none"
-                        strokeDasharray={`${(averagePercentage / 100) * 352} 352`}
-                        className="text-emerald-600 transition-all duration-1000 hidden sm:block"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-2xl sm:text-3xl font-bold text-emerald-600">{averageScore}</span>
-                      <span className="text-[9px] sm:text-xs text-muted-foreground">de 1000</span>
-                    </div>
-                  </div>
-                </div>
-                {essays.length === 0 ? (
-                  <div className="text-center space-y-0.5 bg-muted/50 p-2 rounded-lg">
-                    <p className="text-xs font-medium">Comece agora! 🚀</p>
-                    <p className="text-[10px] text-muted-foreground">Envie sua primeira redação</p>
-                  </div>
-                ) : (
-                  <div className="text-center space-y-0.5 bg-emerald-500/10 p-2 rounded-lg">
-                    <p className="text-xs font-medium text-emerald-600">
-                      {averageScore >= 900
-                        ? "Excelente! 🎉"
-                        : averageScore >= 700
-                          ? "Bom trabalho! 👍"
-                          : "Continue praticando! 💪"}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {essays.length} {essays.length === 1 ? "redação" : "redações"}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border-emerald-500/20">
-              <CardHeader className="p-3 sm:p-4 pb-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded-lg bg-emerald-500/10">
-                      <Star className="h-3.5 w-3.5 text-emerald-600" />
-                    </div>
-                    <CardTitle className="text-xs sm:text-sm">Média por competência</CardTitle>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-1.5 sm:space-y-2 p-3 sm:p-4 pt-0">
-                {[1, 2, 3, 4, 5].map((competencia) => {
-                  const score = competenceAverages[`comp${competencia}` as keyof typeof competenceAverages]
-                  const percentage = (score / 200) * 100
-
-                  return (
-                    <div key={competencia} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium">C{competencia}</span>
-                        <span className="text-emerald-600 font-semibold">{score}/200</span>
-                      </div>
-                      <div className="relative h-1.5 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="absolute inset-y-0 left-0 bg-emerald-600 transition-all duration-500"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  )
-                })}
-                {essays.length === 0 && (
-                  <div className="text-center pt-1.5">
-                    <p className="text-[10px] text-muted-foreground">Envie sua primeira redação</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </>
-        )}
-      </div>
+      <PerformanceSummary 
+        essays={essays}
+        loading={loading}
+        averageScore={averageScore}
+        competenceAverages={competenceAverages}
+      />
     </div>
   )
 }
